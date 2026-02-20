@@ -1,0 +1,82 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  color:rgb(213, 212, 212);
+  font-family:  Roboto, sans-serif, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue';
+}
+::-webkit-scrollbar {
+    display: none;
+    visibility: hidden;
+}
+/* remove arrow in number input */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+
+@keyframes likeAnime {
+  0% {
+    bottom: 0;
+    opacity: 0;
+    transform:translateX(-50%) translateY(-50%) scale(0.5); /* Start smaller */
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%) translateY(-50%) scale(1); /* Full size */
+  }
+  80% {
+    bottom: 80%; /* Rise up */
+    opacity: 1;
+  }
+  100% {
+    bottom: 100%; /* Disappear at the top */
+    opacity: 0;
+    transform: translate(-50%) scale(0.5); /* Fade out and shrink */
+  }
+}
+
+.likeAnimation{
+  animation: likeAnime 2s ease-out forwards; /* Apply animation */
+  
+}
+@keyframes playPauseAnime {
+  0% {
+    opacity: 0;
+    transform:translateX(-50%) translateY(-50%) scale(0.2); /* Start smaller */
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%) translateY(-50%) scale(1); /* Full size */
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%) scale(0.2); /* Fade out and shrink */
+  }
+}
+.playPauseAnimetion{
+  animation: playPauseAnime 1s ease-out forwards; /* Apply animation */
+  
+}
+
+@keyframes storyAnima {
+  0%{
+    width: 0%;
+  }
+  100%{
+    width: 100%;
+  }
+}
+.storyAnimation{
+  animation: storyAnima 5s linear forwards; /* Apply animation */
+  
+}
