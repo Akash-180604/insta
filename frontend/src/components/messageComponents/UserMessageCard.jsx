@@ -33,10 +33,10 @@ const handleConversationFnc =()=>{
 
   return (
     
-<div onClick={handleConversationFnc} className={`${(userId && user?._id==userId)?'bg-blue-950':'hover:bg-gray-800 bg-gray-950'} ${unSeenMessage>0? 'bg-violet-950 hover:bg-violet-600':''}  hover:border-white  w-full  flex justify-between items-center gap-2 py-1.5 px-2 cursor-pointer border-b-[0.001px] border-gray-600 rounded-xl`}>
+<div onClick={handleConversationFnc} className={`${(userId && user?._id==userId)?'bg-blue-950':'hover:bg-gray-900 bg-gray-950'} ${unSeenMessage>0? 'bg-violet-950 hover:bg-violet-600':''}  hover:border-white  w-full  flex justify-between items-center gap-2 py-1.5 px-2 cursor-pointer border-b-[0.001px] border-gray-600 rounded-xl`}>
   <div className='flex w-full truncate'>
 
-      <div className="w-9 h-9 rounded-full bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 p-[0.16rem] mx-1.5  shrink-0 cursor-pointer">
+      <div className="w-9 h-9 rounded-full bg-white p-[0.05rem] mx-1.5  shrink-0 cursor-pointer">
             <div className="h-full w-full bg-white rounded-full relative">
               <img src={user?.profileImage || dp} alt="" className='h-full w-full rounded-full object-cover'/>
               {onlineUsers?.includes(user?._id) &&  <div className='size-3 absolute -top-0.5 -right-0.5 rounded-full bg-violet-700'/>}
@@ -44,9 +44,9 @@ const handleConversationFnc =()=>{
           </div>
 
       <div className='flex-col justify-around w-full mx-1.5'>
-        <h2 className="text-white font-semibold text-sm w-full truncate">{user?.userName}</h2>
+        <h2 className="text-white font-semibold text-xs w-full truncate">{user?.userName.toUpperCase()}</h2>
         <div className='flex gap-2 w-full'>
-        {String(lastMessage?.sender)==String(userData?._id) && (lastMessage?.isRead=='send'?<BiCheck className='fill-slate-100 font-semibold text-xl -mr-1'/>:<BiCheckDouble className={`${lastMessage?.isRead=='seen'?'fill-blue-500':'fill-gray-100'} font-semibold text-xl -mr-1`}/>)}
+        {String(lastMessage?.sender)==String(userData?._id) && (lastMessage?.isRead=='send'?<BiCheck className='fill-slate-200 font-semibold text-lg -mr-1'/>:<BiCheckDouble className={`${lastMessage?.isRead=='seen'?'fill-blue-500':'fill-gray-200'} font-semibold text-lg -mr-1`}/>)}
         {lastMessage?.messageType=='image' && <FaImage />}
         {lastMessage?.messageType=='video' && <RiFolderVideoFill />}
         {lastMessage?.message?<p className='text-gray-300 text-xs w-full truncate'>{lastMessage?.message}</p>

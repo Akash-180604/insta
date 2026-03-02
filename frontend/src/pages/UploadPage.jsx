@@ -61,10 +61,10 @@ const uploadFnc = async () =>{
 
             if(mode=='post'){
                 // postData.push(result.data);
-                dispatch(setPostData([...postData,result.data]));
+                dispatch(setPostData([result.data,...postData]));
             }else if(mode=='reels'){
                 //  reelsData.push(result.data);
-                dispatch(setReelsData([...reelsData,result.data]));
+                dispatch(setReelsData([result.data,...reelsData]));
             }else if(mode=='story'){
                 //  userStoryData.push(result.data);
                 dispatch(setUserStoryData([...userStoryData,result.data]));
@@ -177,7 +177,7 @@ const handleDoubleClick = useCallback(() => {
             </div>
 
          <div className={` ${caption?'border-[1.5px] border-gray-400 bg-black':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-2`}>
-          <h6 className={`${!caption?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950  px-1`}>Enter caption....</h6>
+          <h6 className={`${!caption?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950  px-1`}>Enter caption....</h6>
           <input type="text" value={caption} onChange={(e)=>setCaption(e.target.value)} placeholder='Enter something about this....' className={` ${caption?'bg-black':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
 

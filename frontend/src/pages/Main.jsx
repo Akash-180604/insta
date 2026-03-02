@@ -142,7 +142,7 @@ const Main = () => {
             
         </div>
         {/* online Users */}
-        <div className='w-full m-2 pr-5'>
+        {onlineUserData.length >0 && <div className='w-full m-2 pr-5'>
           <div className='flex justify-between items-center'>
             <h3 className='text-gray-50 text-lg font-semibold cursor-default'>Online Users</h3>
             <p onClick={()=>navigate('/onlineUsers')} className='hover:underline active:scale-90  text-blue-600 text-sm font-medium px-2 py-0.5 rounded-2xl cursor-pointer'>show more</p>
@@ -158,22 +158,11 @@ const Main = () => {
           </div>
             ))}
         </div>
-        </div>
+        </div>}
         
 
         <div className='flex flex-col pb-20'>
           {postData?.map((post,idx)=>
-            (userData?.followings?.includes(post?.author?._id)) &&
-              <ImagePost post={post}  key={idx} navigateFrom='mainPage'/>
-          )}
-          {postData?.map((post,idx)=>
-            (userData?.previousSearchedUsers?.includes(post?.author?._id)) &&
-            !(userData?.followings?.includes(post?.author?._id)) &&
-              <ImagePost post={post}  key={idx} navigateFrom='mainPage'/>
-          )}
-          {postData?.map((post,idx)=>
-            !(userData?.previousSearchedUsers?.includes(post?.author?._id)) &&
-            !(userData?.followings?.includes(post?.author?._id)) &&
               <ImagePost post={post}  key={idx} navigateFrom='mainPage'/>
           )}
             

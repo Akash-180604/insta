@@ -6,8 +6,9 @@ import { FaRegHeart,FaHeart, FaFacebookMessenger } from "react-icons/fa";
 import { FaRegComment } from "react-icons/fa6";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { GrSend } from "react-icons/gr";
-import { IoSend } from "react-icons/io5";
+import { IoArrowBackSharp, IoSend } from "react-icons/io5";
 import { FaRegBookmark, FaBookmark } from "react-icons/fa6";
+import { SlOptionsVertical } from "react-icons/sl";
 import { useDispatch, useSelector } from 'react-redux';
 import VideoComponent from './VideoComponent';
 import { setLikedUsersData, setPostData } from '../redux/postSlice';
@@ -19,6 +20,7 @@ import ImageComponent from './ImageComponent';
 import Suggetion from '../basicFunctions/Suggetion';
 import VideoComponentUpdated from './VideoComponentUpdated';
 import { SocketDataContext } from '../context/SocketContext';
+import { capitalizeFirstLetter } from '../basicFunctions/stringFunctions';
 
 const ImagePost = ({post, navigateFrom = 'mainPage'}) => {
   
@@ -28,6 +30,10 @@ const[comment,setComment] = useState('');
 const[showComment,setShowComment] = useState(false);
 const[showLike,setShowLike] = useState(false);
 const[loading,setLoading] = useState(false);
+const[showMenuDiv,setShowMenuDiv] = useState(false);
+const[showEditDiv,setShowEditDiv] = useState(false);
+const[caption,SetCaption] = useState(post?.caption);
+const[editPostLoading,setEditPostLoading] = useState(false);
 
 
 const dispatch = useDispatch()
@@ -37,7 +43,7 @@ const postRef = useRef()
 
 const {userData}= useSelector(state=>state.user);
 const {postData}= useSelector(state=>state.post);
-  const {socket} = useContext(SocketDataContext);
+const {socket} = useContext(SocketDataContext);
 
 
 // This is for ProfilePage when anyOne click in any post
@@ -47,9 +53,10 @@ const {likedUsersData} = useSelector(state=>state.post);
 const[author,setAuthor] = useState(null);
 
 useEffect(()=>{
-if (navigateFrom == 'mainPage') {
+  
+if (navigateFrom == 'mainPage' || navigateFrom == 'savedProfile') {
  setAuthor(post?.author);
-}else if (navigateFrom == 'profilePage' || navigateFrom == 'savedProfile'){
+}else if (navigateFrom == 'profilePage'){
  setAuthor(otherUserData);
 }
 },[otherUserData,navigate,navigateFrom])
@@ -60,12 +67,13 @@ const isFollow = (userData.followings).some((id)=>String(id)===String(author?._i
     try {
       const result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/post/like/${post._id}`,{withCredentials:true});
 const updatedPost = result.data;
+console.log(navigateFrom);
 
 if (navigateFrom == 'mainPage') {
   const updatedData = postData.map(
       (p)=> String(p._id)===String(post._id)?updatedPost:p 
     );
-    dispatch(setPostData(updatedData));
+    dispatch(setPostData(updatedData));  
 }else if (navigateFrom == 'profilePage'){
   
   const updated = otherUserData?.posts?.map(
@@ -280,19 +288,115 @@ const handleDoubleClick = useCallback(() => {
     likeDoubleClickFnc()
   }, []);
 
+  useEffect(()=>{
+    const closeShowMenuDivDiv = (e)=>{
+      
+      if (showMenuDiv) {
+        if (!e.target.classList[0].includes('editDiv')) {
+        setShowMenuDiv(false);
+        }
+      }
+      
+    }
+    
+    document.addEventListener('mousedown',closeShowMenuDivDiv);
+
+    return ()=> {
+      document.removeEventListener("mousedown", closeShowMenuDivDiv);    
+    }
+  },[showMenuDiv])
+
+  const editPostFnc = async ()=>{
+    setEditPostLoading(true);
+    try {
+    const result = await axios.post(`${import.meta.env.VITE_SERVER_URL}/post/editPost/${post._id}`,{caption},{withCredentials:true});
+
+      if (navigateFrom == 'mainPage') {
+  const updatedData = postData.map(
+      (p)=> String(p._id)===String(post._id)?{...p, caption:caption}:p
+    );
+    dispatch(setPostData(updatedData));  
+}else if (navigateFrom == 'profilePage'){
+  
+  const updated = otherUserData?.posts?.map(
+      (p)=> String(p._id)===String(post._id)?{...p, caption}:p 
+    );
+    const updatedOtherUser = {...otherUserData,posts:updated}
+ dispatch(setOtherUserData(updatedOtherUser));
+}else if (navigateFrom == 'savedProfile'){
+  
+  const updatedSavedPosts = otherUserData?.savedPosts?.map(
+      (p)=> String(p._id)===String(post._id)?{...p, caption}:p 
+    );
+    const updatedPost = otherUserData?.posts?.map(
+      (p)=> String(p._id)===String(post._id)?{...p, caption}:p 
+    );
+    const updatedOtherUser = {...otherUserData,savedPosts:updatedSavedPosts, posts:updatedPost}
+ dispatch(setOtherUserData(updatedOtherUser));
+}
+    setEditPostLoading(false);
+    setShowEditDiv(false);
+
+    } catch (error) {
+      console.log(error);
+    setEditPostLoading(false);
+
+      
+    }
+  }
+
+
+  const deletePostFnc = async ()=>{
+  const userResponse = confirm('Are you sure to delete the Post?');
+  if (!userResponse) {
+    return
+  }
+    try {
+    const result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/post/deletePost/${post._id}`,{withCredentials:true});
+
+      if (navigateFrom == 'mainPage') {
+  const updatedData = postData.filter(
+      (p)=> String(p._id)!==String(post._id) 
+    );
+    dispatch(setPostData(updatedData));  
+}else if (navigateFrom == 'profilePage'){
+  
+  const updated = otherUserData?.posts?.filter(
+      (p)=> String(p._id)!==String(post._id) 
+    );
+    const updatedOtherUser = {...otherUserData,posts:updated}
+ dispatch(setOtherUserData(updatedOtherUser));
+}else if (navigateFrom == 'savedProfile'){
+  
+  const updatedSavedPosts = otherUserData?.savedPosts?.filter(
+      (p)=> String(p._id)!==String(post._id)
+    );
+    const updatedPost = otherUserData?.posts?.filter(
+      (p)=> String(p._id)!==String(post._id) 
+    );
+    const updatedOtherUser = {...otherUserData,savedPosts:updatedSavedPosts, posts:updatedPost}
+ dispatch(setOtherUserData(updatedOtherUser));
+ setShowMenuDiv(false);
+}
+    } catch (error) {
+      console.log(error);
+      
+    }
+  }
+
 
   return (
     <div className='w-full shadow-xl '>
         <div className='p-2 flex justify-between items-center gap-2'>
            <div className='flex items-center gap-2'> 
-            <div onClick={()=>navigate(`/profile/${author?.userName}`)} className='active:scale-90 w-10 h-10 rounded-full  bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 p-[0.16rem] shrink-0 cursor-pointer mx-0.5'>
+            <div onClick={()=>navigate(`/profile/${author?.userName}`)} className='active:scale-90 w-10 h-10 rounded-full  bg-white p-[0.04rem] shrink-0 cursor-pointer mx-0.5'>
       <div className='h-full w-full bg-white rounded-full'>
         <img src={author?.profileImage || dp} alt="" className='h-full w-full rounded-full object-cover'/>
       </div>
     </div>
             <div>
-            <h2 onClick={()=>navigate(`/profile/${author?.userName}`)} className='active:scale-90 font-semibold text-sm leading-3 cursor-pointer text-white'>{author?.userName}</h2>
-            <p className='text-xs cursor-pointer text-gray-200'>{`${author?.firstName} ${author?.lastName}`}</p>
+            <h2 onClick={()=>navigate(`/profile/${author?.userName}`)} className='active:scale-90 font-semibold text-sm leading-3 cursor-pointer text-white'>{capitalizeFirstLetter(author?.userName)}</h2>
+            <p className='text-xs cursor-pointer text-gray-200'>{`${capitalizeFirstLetter(author?.firstName)} ${capitalizeFirstLetter(author?.lastName) || ''}`}</p>
             <p className='text-[.6rem] text-white'>Posted {moment(post?.createdAt).fromNow()}</p>
             </div>
             </div>
@@ -300,8 +404,44 @@ const handleDoubleClick = useCallback(() => {
             {String(author?._id)!==String(userData._id)?
             <div onClick={()=>followFnc(author?._id,userData._id,dispatch)} className='active:scale-90 text-gray-900 text-sm font-semibold  bg-white px-4 py-2 rounded-full cursor-pointer'>
             {isFollow?'Following' : 'Follow'}
-            </div>:<div className='text-sm text-gray-300 px-4 cursor-default'>Your Post</div>}
+            </div>:
+            <div className='relative text-sm text-gray-300 px-4 flex gap-3 items-center cursor-default'>Your Post 
+            
+            {/* it is menu for edit and delete post */}
+            <SlOptionsVertical onClick={()=>setShowMenuDiv(prev=>!prev)} className='editDiv hover:bg-gray-900 hover:border-b-[0.3px] active:scale-95 border-gray-400 p-2 text-3xl rounded-full cursor-pointer'/>
+            {showMenuDiv && <div className='editDiv absolute min-w-36 z-50 p-1 py-2 top-8 right-7 w-fit rounded-sm flex-col gap-1 transition bg-gray-900'>
+              <div onClick={()=>{setShowEditDiv(true);}} className='editDiv w-full rounded-lg text-white font-semibold text-sm hover:bg-gray-700 active:scale-95 py-1.5 px-2 text-nowrap border-gray-600 transition cursor-pointer'>Edit Post</div>
+              <div onClick={deletePostFnc} className='editDiv rounded-lg w-full hover:bg-gray-700 active:scale-95 py-1.5 px-2 font-semibold text-sm text-white text-nowrap border-gray-600 transition cursor-pointer'>Delete Post</div>
+            </div>}
+            </div>}
         </div>
+
+         {showEditDiv && <div onClick={()=>setShowEditDiv(false)} className='fixed z-50 top-0 left-0 h-screen w-screen overflow-hidden flex justify-center items-center rounded-lg bg-black/70'>
+              <div onClick={(e)=>e.stopPropagation()} className='flex-col p-5 pb-10 w-full sm:max-w-[500px] bg-gray-950'>
+                <IoArrowBackSharp onClick={()=>setShowEditDiv(false)} className='hover:scale-110 active:scale-90 text-3xl rounded-xl  cursor-pointer'/>
+                  
+                  <div className='max-w-44 max-h-44 mb-7 overflow-hidden mx-auto'>
+                    {post.mediaType=='image'?
+          <img src={post?.media} alt="" className=' max-w-full max-h-full object-contain'/>
+          :<video src={post?.media} autoPlay={false} controls className=' w-full max-h-full object-contain'/>
+          }
+                  </div>
+                  <div className={` ${caption?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full rounded-lg relative  px-2.5 py-1 my-3.5`}>
+          <h6 className={`${!caption?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950 gray-950  px-1`}>Set caption*....</h6>
+          <input type='text' value={caption} onChange={(e)=>SetCaption(e.target.value)} placeholder='Set caption*....' className={` ${caption?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
+        </div>
+        <div className=' w-full text-center flex justify-center' ><button disabled={editPostLoading} onClick={editPostFnc} className='hover:scale-105 active:scale-95 transition w-[70%] text-center flex justify-center rounded-full bg-blue-50 text-black font-bold p-1.5 mt-4 '> {editPostLoading?<TailSpin
+                height="25"
+                width="25"
+                color="#111"
+                ariaLabel="tail-spin-loading"
+                 visible={editPostLoading}
+              />:'Edit Post' }</button>
+        </div>
+              </div>
+          </div>}
+
+
         <div onDoubleClick={handleDoubleClick} onClick={handleClick} className='max-h-[500px] w-full bg-slate-400 relative overflow-hidden'> 
           {post.mediaType=='image'?
           // <img src={post.media} alt="" className=' w-full max-h-full object-cover'/>

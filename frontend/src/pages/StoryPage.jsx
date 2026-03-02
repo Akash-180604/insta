@@ -12,6 +12,7 @@ import VideoComponent from '../components/VideoComponent'
 import ShowViewers from '../components/ShowViewers'
 import observerFnc from '../getingData/observerFnc'
 import LoadingComponent from '../components/loadingComponent'
+import { capitalizeFirstLetter } from '../basicFunctions/stringFunctions';
 
 const StoryPage = () => {
 
@@ -103,6 +104,23 @@ if (video) {
     }
 
 }
+
+//if showviewers is true the video will pause and when showviewers false video will play
+// useEffect(()=>{
+//   if (otherStoryData[currentStoryNo].mediaType=='video') {
+//     const video = videoRef.current;
+
+//     if (video) {
+//       if (showViewers) {
+//       video.pause();
+//     }else{
+//       video.play();
+//     }
+//     }
+    
+//   }
+//   },[showViewers])
+
 useEffect(()=>{
   observerFnc(videoRef);  //observe function
   },[])
@@ -138,7 +156,7 @@ const goToPrev = () => {
       <div onClick={goToNext} className='h-full w-2/3 '/>
     </div>
 
-     <div className='w-full md:max-w-[500px] relative h-full flex justify-center items-center  bg-gray-950  rounded-2xl'>
+     <div className='w-full sm:max-w-[600px] relative h-full flex justify-center items-center  rounded-2xl'>
         {loading && <LoadingComponent/>}
 
     <div className='h-1 absolute z-40 top-0 w-full flex rounded-full'>
@@ -160,15 +178,15 @@ const goToPrev = () => {
                 <img onClick={()=>navigate(`/profile/${otherStoryData[currentStoryNo]?.author?.userName}`)} src={otherStoryData[currentStoryNo]?.author?.profileImage || dp} alt="" className='h-10 w-10 rounded-full object-cover border-2 border-gray-100 cursor-pointer'/>
                 <div onClick={()=>navigate(`/profile/${otherStoryData[currentStoryNo]?.author?.userName}`)} className='flex-col'>
                   <h2 className='font-semibold text-sm cursor-pointer text-white leading-tight'>{otherStoryData[currentStoryNo]?.author?.userName}</h2>
-                  <p className='text-xs cursor-pointer text-white leading-tight'>{`${otherStoryData[currentStoryNo]?.author?.firstName} ${otherStoryData[currentStoryNo]?.author?.lastName}`}</p>
-                  <p className='text-xs text-white leading-snug cursor-default'>Set story {moment(otherStoryData[currentStoryNo]?.createdAt).fromNow()}</p>
+                  <p className='text-[0.7rem] cursor-pointer text-white leading-tight'>{`${capitalizeFirstLetter(otherStoryData[currentStoryNo]?.author?.firstName)} ${capitalizeFirstLetter(otherStoryData[currentStoryNo]?.author?.lastName)}`}</p>
+                  <p className='text-[0.6rem] text-white leading-snug cursor-default'>Set story {moment(otherStoryData[currentStoryNo]?.createdAt).fromNow()}</p>
                 </div>
 
             </div>
 
 
         {otherStoryData[currentStoryNo]?.mediaType=='image'?
-            <img src={otherStoryData[currentStoryNo]?.media} ref={imageRef} alt="" onError={goToNext} className='max-w-full max-h-[75%] object-cover' />
+            <img src={otherStoryData[currentStoryNo]?.media} ref={imageRef} alt="" onError={goToNext} className='max-w-full max-h-full object-contain' />
             // : <VideoComponent media={otherStoryData[currentStoryNo]?.media}/>
             : <video ref={videoRef} src={otherStoryData[currentStoryNo]?.media} autoPlay onTimeUpdate={updateFnc} onLoadedMetadata={handleVideoLoad} onError={goToNext} className='max-w-full max-h-full object-cover'></video>
             
@@ -181,8 +199,8 @@ const goToPrev = () => {
                 <h1 className='text-gray-300 text-xl font-semibold'>{(otherStoryData[currentStoryNo]?.views)?.length}</h1>
                 <FaEye className='text-gray-300 text-xl font-semibold' />
             </div>
-            <div onClick={()=>setShowViewers(false)} className={`${!showViewers?'hidden':'block'} w-screen  h-screen  bg-gray-950 fixed left-0 top-0 opacity-50 z-10`}></div>
-            <div className={`${!showViewers?'hidden':'block'} flex-col w-full p-2 h-[50vh] rounded-t-2xl bg-gray-800 bottom-0 z-30 absolute  overflow-y-auto`}>
+            <div onClick={()=>setShowViewers(false)} className={`${!showViewers?'hidden':'block'} w-screen  h-screen bg-black/50 fixed left-0 top-0 z-40`}></div>
+            <div className={`${!showViewers?'hidden':'block'} flex-col w-full p-2 h-[50vh] rounded-t-2xl bg-gray-800 bottom-0 z-50 absolute  overflow-y-auto`}>
               <div className='w-full border-b-[1px] flex items-center p-2'>
                 <IoMdArrowRoundBack onClick={()=>setShowViewers(false)} className='hover:bg-gray-900 active:scale-95 rounded-xl text-2xl fill-white cursor-pointer' />
                 <h1 className='mx-3 text-white text-xl cursor-default'>Your Story Viewers</h1>

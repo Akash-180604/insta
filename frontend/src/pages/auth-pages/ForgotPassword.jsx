@@ -114,7 +114,7 @@ const ForgotPassword = () => {
         </div>
 
          <div className={` ${input?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-4`}>
-          <h6 className={`${!input?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950  px-1`}>{isEmail?'Enter Email ....':'Enter UserName ....'}</h6>
+          <h6 className={`${!input?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950  px-1`}>{isEmail?'Enter Email ....':'Enter UserName ....'}</h6>
           <input type= {isEmail?'email':'text'} autoFocus value={input} onChange={(e)=>setInput(e.target.value)} placeholder={isEmail?'Enter Email ....':'Enter UserName ....'} className={` ${input?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
         
@@ -142,7 +142,7 @@ const ForgotPassword = () => {
         <p className='text-xs text-gray-300 text-center mb-5 cursor-default'>OTP expire after 90 second</p>
 
          {/* <div className={` ${otp?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-4`}>
-          <h6 className={`${!otp?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950  px-1`}>Enter OTP ....</h6>
+          <h6 className={`${!otp?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950  px-1`}>Enter OTP ....</h6>
           <input type= 'number' value={otp} onChange={(e)=>setOtp(e.target.value)} placeholder='Enter OTP ....' className={` ${otp?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
             <OTPComponent setOtp ={setOtp} />
         </div> */}
@@ -168,12 +168,12 @@ const ForgotPassword = () => {
         <h1 className=' text-center font-bold text-2xl text-white mb-6 cursor-default'>Reset Password</h1>
 
          <div className={` ${password?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-4`}>
-          <h6 className={`${!password?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950  px-1`}>Enter Password ....</h6>
+          <h6 className={`${!password?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950  px-1`}>Enter Password ....</h6>
           <div className='absolute right-2 h-[90%] px-1- flex items-center text-white cursor-pointer' onClick={()=>setShowPassword((e)=>!e)}>{showPassword?<FaRegEyeSlash />:<FaRegEye />}</div>
           <input type={showPassword?'text':'password'} autoFocus value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter Password ....' className={` ${password?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
         <div className={` ${conformPassword?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full rounded-lg relative  px-2.5 py-1 my-4`}>
-          <h6 className={`${!conformPassword?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950  px-1`}>Enter ConformPassword ....</h6>
+          <h6 className={`${!conformPassword?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950  px-1`}>Enter ConformPassword ....</h6>
             <div className='absolute right-2 h-[90%] px-1- flex items-center text-white cursor-pointer' onClick={()=>setShowPassword((e)=>!e)}>{showPassword?<FaRegEyeSlash />:<FaRegEye />}</div>
           <input type={showPassword?'text':'password'}  value={conformPassword} onChange={(e)=>setConformPassword(e.target.value)} placeholder='Enter ConformPassword ....' className={` ${conformPassword?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>

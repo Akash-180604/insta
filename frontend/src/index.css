@@ -22,6 +22,10 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+pre {
+  white-space: pre-wrap;
+  overflow-wrap: break-word; /* or 'anywhere' */
+}
 
 
 @keyframes likeAnime {

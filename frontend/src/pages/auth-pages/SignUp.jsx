@@ -43,10 +43,10 @@ const signupFnc = async (e)=>{
     const result=await axios.post(`${import.meta.env.VITE_SERVER_URL}/auth/signup`,{firstName,lastName,userName,email,password},{withCredentials:true})
   console.log(result.data);
     dispatch(setUserData(result.data));
-    setShowError('')
-    navigate('/')
-  setLoading(false);
-
+    setShowError('');
+    setLoading(false);
+    navigate('/');
+    
   } catch (error) {
 
     setShowError(error.response.data.message);
@@ -105,27 +105,27 @@ const clickEnterFnc = (e)=>{
         <h1 className=' text-center font-bold text-2xl text-white mb-6 cursor-default'>Create an Account</h1>
 
         <div className={` ${firstName?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full rounded-lg relative  px-2.5 py-1 my-3.5`}>
-          <h6 className={`${!firstName?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950 gray-950  px-1`}>Enter your First Name*....</h6>
+          <h6 className={`${!firstName?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950 gray-950  px-1`}>Enter your First Name*....</h6>
           <input type='text' value={firstName} onChange={(e)=>setFirstName(e.target.value)} placeholder='Enter your First Name*....' className={` ${firstName?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
 
        <div className={` ${lastName?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-3.5`}>
-          <h6 className={`${!lastName?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950 px-1`}>Enter your Last Name....</h6>
+          <h6 className={`${!lastName?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950 px-1`}>Enter your Last Name....</h6>
           <input type="text" value={lastName} onChange={(e)=>setLastName(e.target.value)} placeholder='Enter your Last Name....' className={` ${lastName?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
        <div className={` ${userName?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-3.5`}>
-          <h6 className={`${!userName?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950 px-1`}>Enter your UserName*....</h6>
+          <h6 className={`${!userName?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950 px-1`}>Enter your UserName*....</h6>
           <input type="text" value={userName} onChange={(e)=>setUserName(e.target.value)} placeholder='Enter your UserName*....' className={` ${userName?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
 
-          {userName.trim() && isUseNameExists && <p className='text-xs text-red-800 font-semibold -my-2.5'> * This UserName already Exists try another one</p>}
+          {userName.trim() && isUseNameExists && <p className='text-xs text-red-800 font-semibold -mt-2.5 mb-1'> * This UserName already Exists try another one</p>}
 
          <div className={` ${email?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-3.5`}>
-          <h6 className={`${!email?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950 px-1`}>Enter your email*....</h6>
+          <h6 className={`${!email?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950 px-1`}>Enter your email*....</h6>
           <input type="email" value={email} onChange={(e)=>setEmail(e.target.value)} placeholder='Enter your email*....' className={` ${email?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
         <div className={` ${password?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-3.5`}>
-          <h6 className={`${!password?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950 px-1`}>Enter your password*....</h6>
+          <h6 className={`${!password?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950 px-1`}>Enter your password*....</h6>
           <div className='absolute right-2 h-[90%] px-1- flex items-center text-white cursor-pointer' onClick={()=>setShowPassword((e)=>!e)}>{showPassword?<FaRegEyeSlash />:<FaRegEye />}</div>
           <input type={`${showPassword?'text':'password'}`} value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter your password*....' className={` ${password?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>

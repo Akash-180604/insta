@@ -45,6 +45,7 @@ const App = () => {
 //   getAllReels();
 //   getAllStory();
 // }
+ console.log(userData);
  
   const dispatch = useDispatch();
 
@@ -107,8 +108,8 @@ const App = () => {
       <Route path='/search' element={userData?<SearchPage/>:<Navigate to={'/signUp'}/>}/>
       <Route path='/message/' element={userData?<MessagePage/>:<Navigate to={'/signUp'}/>}/>
       <Route path='/message/:userId' element={userData?<MessagePage/>:<Navigate to={'/signUp'}/>}/>
-      <Route path='/post/:postId' element={userData?<PostByIdPage/>:<Navigate to={'/signUp'}/>}/>
-      <Route path='/reels/:reelsId' element={userData?<ReelsByIdPage/>:<Navigate to={'/signUp'}/>}/>
+      <Route path='/post/:postId' element={userData?<PostByIdPage/>:<SignUp/>}/>
+      <Route path='/reels/:reelsId' element={userData?<ReelsByIdPage/>:<SignUp/>}/>
       <Route path='/notification' element={userData?<NotificationPage/>:<Navigate to={'/signUp'}/>}/>
       <Route path='/onlineUsers' element={userData?<OnlineUsersPage/>:<Navigate to={'/signUp'}/>}/>
 

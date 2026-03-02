@@ -13,6 +13,7 @@ import shortCount from '../../basicFunctions/shortCount';
 import LoadingComponent from '../../components/loadingComponent';
 import { setSelectedUserData } from '../../redux/messageSlice';
 import { useRef } from 'react';
+import { capitalizeFirstLetter } from '../../basicFunctions/stringFunctions';
 
 const ProfilePage = () => {
 
@@ -116,17 +117,17 @@ const clickMessageBtnFnc = ()=>{
       </div>}
 
             <div className='w-56'>
-            <h2 className='font-bold text-2xl text-gray-50 cursor-default '>{otherUserData?.userName}</h2>
-            <p className='text-xl cursor-default'>{otherUserData?.firstName +' '+ otherUserData?.lastName == undefined?'':otherUserData?.lastName }</p>
+            <h2 className='font-bold text-2xl text-gray-50 cursor-default '>{otherUserData?.userName.toUpperCase()}</h2>
+            <p className='text-xl cursor-default'>{capitalizeFirstLetter(otherUserData?.firstName) +' '+ capitalizeFirstLetter(otherUserData?.lastName) || '' }</p>
             <p className='text-sm cursor-default mt-2 lining-nums'>{ otherUserData?.bio == undefined?'':otherUserData?.bio } </p>
             </div>
             </div>
-            <div className='w-full flex justify-around pb-5  '>
-                <div className='flex-col items-center cursor-default'>
+            <div className='w-full flex justify-around pb-5'>
+                <div onClick={()=>setSelect('post')} className='flex-col items-center cursor-pointer'>
                 <h1 className='font-semibold '>{shortCount(otherUserData?.posts?.length )}</h1>
                 <h1 className='font-semibold '>Posts</h1>
                 </div>
-                <div className='flex-col items-center cursor-default'>
+                <div onClick={()=>setSelect('reel')} className='flex-col items-center cursor-pointer'>
                 <h1 className='font-semibold '>{shortCount(otherUserData?.reels?.length)}</h1>
                 <h1 className='font-semibold '>Reels</h1>
                 </div>                

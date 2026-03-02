@@ -77,7 +77,7 @@ const clickEnterFnc = (e)=>{
            onClick={() => navigate(-1)}
             className="lg:hidden hover:scale-105 active:scale-90 hover:bg-gray-800 size-8 p-1 text-white text-3xl font-semibold text-start rounded-2xl cursor-pointer "
           />
-          <div className="w-10 h-10 rounded-full  bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 p-[0.16rem]   shrink-0 cursor-pointer mx-2">
+          <div className="w-10 h-10 rounded-full  bg-white p-[0.1rem] shrink-0 cursor-pointer mx-2">
             <div className="h-full w-full bg-white rounded-full">
               <img src={geminiPng} alt="" className='h-full w-full rounded-full object-cover'/>
             </div>

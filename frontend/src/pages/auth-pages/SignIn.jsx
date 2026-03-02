@@ -64,11 +64,11 @@ const clickEnterFnc = (e)=>{
         </div>
 
          <div className={` ${input?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-4`}>
-          <h6 className={`${!input?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950  px-1`}>{isEmail?'Enter Email ....':'Enter UserName ....'}</h6>
+          <h6 className={`${!input?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950  px-1`}>{isEmail?'Enter Email ....':'Enter UserName ....'}</h6>
           <input type= {isEmail?'email':'text'} value={input} onChange={(e)=>setInput(e.target.value)} placeholder={isEmail?'Enter Email ....':'Enter UserName ....'} className={` ${input?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
         <div className={` ${password?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-4`}>
-          <h6 className={`${!password?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950  px-1`}>Enter your password....</h6>
+          <h6 className={`${!password?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950  px-1`}>Enter your password....</h6>
           <div className='absolute right-2 h-[90%] px-1- flex items-center text-white cursor-pointer' onClick={()=>setShowPassword((e)=>!e)}>{showPassword?<FaRegEyeSlash />:<FaRegEye />}</div>
           <input type={`${showPassword?'text':'password'}`} value={password} onChange={(e)=>setPassword(e.target.value)} placeholder='Enter your password....' className={` ${password?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>

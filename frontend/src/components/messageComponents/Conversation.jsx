@@ -13,6 +13,7 @@ import MessageChat from './MessageChat';
 import getingDate from '../../basicFunctions/getingDate';
 import { SocketDataContext } from '../../context/SocketContext';
 import { FaChevronDown } from 'react-icons/fa';
+import { capitalizeFirstLetter } from '../../basicFunctions/stringFunctions';
 
 
 const Conversation = () => {
@@ -246,7 +247,7 @@ useEffect(()=>{
           />
           <div
             onClick={() => navigate(`/profile/${selectedUserData?.userName}`)}
-            className="w-10 h-10 rounded-full  bg-gradient-to-r from-purple-500 via-pink-500 to-yellow-500 p-[0.16rem] shrink-0 cursor-pointer mx-2"
+            className="w-10 h-10 rounded-full  bg-white p-[0.4px] shrink-0 cursor-pointer mx-2"
           >
             <div className="h-full w-full bg-white relative rounded-full">
               <img src={selectedUserData?.profileImage || dp} alt="" className='h-full w-full rounded-full object-cover'/>
@@ -254,8 +255,8 @@ useEffect(()=>{
             </div>
           </div>
           <div className="h-full w-full px-2 flex-col justify-between cursor-default">
-              <h2 onClick={() => navigate(`/profile/${selectedUserData?.userName}`)} className="text-white font-medium text-sm truncate cursor-pointer">{selectedUserData?.userName}</h2>
-              <p className="text-gray-300 text-xs">{selectedUserData?.firstName} {selectedUserData?.lastName}</p>
+              <h2 onClick={() => navigate(`/profile/${selectedUserData?.userName}`)} className="text-white font-semibold text-sm truncate cursor-pointer">{selectedUserData?.userName.toUpperCase()}</h2>
+              <p className="text-gray-300 text-xs">{capitalizeFirstLetter(selectedUserData?.firstName)} {capitalizeFirstLetter(selectedUserData?.lastName)}</p>
           </div> 
        </div>
 

@@ -1,7 +1,7 @@
 const express = require("express");
 const isAuth = require("../middleWire/isAuth");
 const upload = require("../middleWire/multer");
-const { uploadPost, likePost, commentPost, savedPost, getAllPost, likedUsers, getPostById } = require("../controllers/postControllers");
+const { uploadPost, likePost, commentPost, savedPost, getAllPost, likedUsers, getPostById, editPost, deletePost } = require("../controllers/postControllers");
 const postRouter = express.Router();
 
 postRouter.get("/getAllPost",isAuth,getAllPost);
@@ -11,6 +11,8 @@ postRouter.post("/comment/:postId",isAuth,commentPost);
 postRouter.get("/saved/:postId",isAuth,savedPost);
 postRouter.get("/likedUsers/:postId",isAuth,likedUsers);
 postRouter.get("/getPostById/:postId",isAuth,getPostById);
+postRouter.post("/editPost/:postId",isAuth,editPost);
+postRouter.get("/deletePost/:postId",isAuth,deletePost);
 
 
 

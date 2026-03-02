@@ -17,7 +17,7 @@ const ProfileShortPost = ({post, PostIndex, navigateForm}) => {
   }
 
   return (
-    <div onClick={clickedFnc} className='h-32 bg-black border-[1px] border-black cursor-pointer '>
+    <div onClick={clickedFnc} className='h-32 bg-black border-[1px] border-black flex justify-center items-center cursor-pointer '>
        {post.mediaType=='image'?
           <img src={post.media} alt="" className=' w-full max-h-full object-cover'/>
           :<div className='w-full h-full relative bg-black'>

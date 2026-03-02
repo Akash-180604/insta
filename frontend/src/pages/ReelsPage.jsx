@@ -13,22 +13,7 @@ const ReelsPage = () => {
        <div className='w-full max-w-[500px] h-screen flex-col justify-center items-center'>
         
         {reelsData?.map((reels,idx)=>
-            (userData?.followings?.includes(reels?.author?._id)) &&
             (<div key={idx} className='w-full h-screen snap-start'>
-            <ReelsComponent reels={reels} navigateFrom='reelsPage' />
-            </div>)
-          )}
-          {reelsData.map((reels,idx)=>
-            (userData?.previousSearchedUsers?.includes(reels?.author?._id)) &&
-            !(userData?.followings?.includes(reels?.author?._id)) &&
-             (<div key={idx} className='w-full h-screen snap-start'>
-            <ReelsComponent reels={reels} navigateFrom='reelsPage' />
-            </div>)
-          )}
-          {reelsData.map((reels,idx)=>
-            !(userData?.previousSearchedUsers?.includes(reels?.author?._id)) &&
-            !(userData?.followings?.includes(reels?.author?._id)) &&
-              (<div key={idx} className='w-full h-screen snap-start'>
             <ReelsComponent reels={reels} navigateFrom='reelsPage' />
             </div>)
           )}

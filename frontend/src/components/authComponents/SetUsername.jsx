@@ -73,7 +73,7 @@ useEffect(() => {
         <h1 className=' text-center font-bold text-xl text-white mb-8 cursor-default'>Enter a User Name </h1>
         
         <div className={` ${userName?'border-[1.5px] border-gray-400 bg-gray-950':'bg-gray-700'} w-full   rounded-lg relative  px-2.5 py-1 my-6`}>
-          <h6 className={`${!userName?'hidden':''} text-white absolute top-[-12px]  text-sm  bg-gray-950 px-1`}>Enter your UserName*....</h6>
+          <h6 className={`${!userName?'hidden':''} text-white absolute top-[-12px]  text-xs  bg-gray-950 px-1`}>Enter your UserName*....</h6>
           <input type="text" value={userName} onChange={(e)=>setUserName(e.target.value)} placeholder='Enter your UserName*....' className={` ${userName?'bg-gray-950':'bg-gray-700'} outline-none border-none w-full h-full text-white  text-sm`} />
         </div>
 

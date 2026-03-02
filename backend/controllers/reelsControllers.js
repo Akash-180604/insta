@@ -205,7 +205,7 @@ const getReelsById = async (req,res) =>{
       const {reelsId} =  req.params;
       const reelsObjectId = new mongoose.Types.ObjectId(reelsId);
       
-      const reels = await Reels.findOne(reelsObjectId)
+      const reels = await Reels.findById(reelsObjectId)
       .populate("author",'firstName lastName userName profileImage')
       .populate('comments.author', 'firstName lastName userName profileImage');
 

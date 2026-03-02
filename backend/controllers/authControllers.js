@@ -49,13 +49,13 @@ const signup = async (req, res) => {
       password: hashedPassword
     });
 
-    const token = generateToken(createUser._id);
+    const token = await generateToken(createUser._id);
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: process.env.MODE === "devlopment"?"strict":"none",
       maxAge: 15 * 24 * 3600 * 1000,
       secure: process.env.MODE !== "devlopment"
-    });
+    });    
 
     return res.status(201).json(createUser)
   } catch (error) {
@@ -110,7 +110,7 @@ let realUser;
     const token = await generateToken(realUser._id);
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: process.env.MODE === "devlopment"?"strict":"none",
       maxAge: 15 * 24 * 3600 * 1000,
       secure: process.env.MODE !== "devlopment",
     });
@@ -178,10 +178,10 @@ const googleAuth = async (req, res) => {
 
   }
 
-  const token = generateToken(user._id);
+  const token = await generateToken(user._id);
     res.cookie("token", token, {
       httpOnly: true,
-      sameSite: "strict",
+      sameSite: process.env.MODE === "devlopment"?"strict":"none",
       maxAge: 15 * 24 * 3600 * 1000,
       secure: process.env.MODE !== "devlopment"
     });

@@ -76,10 +76,21 @@ const getProfile = async(req,res)=>{
        const userId = req.userId;
 
 
-   let user = await User.findOne({userName})
-   .populate('posts reels')
-   .lean();
+  //  let user = await User.findOne({userName})
+  //  .populate('posts').sort({createdAt:-1})
+  //  .populate('reels').sort({createdAt:-1})
+  //  .lean();
    
+  let user = await User.findOne({userName})
+  .populate({                // Correct way: Populate with options
+    path: 'posts',
+    options: { sort: { createdAt: -1 } } // Sort posts here
+  })
+  .populate({                // Correct way: Populate with options
+    path: 'reels',
+    options: { sort: { createdAt: -1 } } // Sort reels here
+  });
+
    if(!user){
       return res.status(400).json({message:'cant get user of this user name'})
     }
@@ -87,8 +98,70 @@ const getProfile = async(req,res)=>{
     if (String(user._id)===String(userId)) {
       // await user.populate('savedPosts savedReels');
        user = await User.findOne({userName})
-   .populate('posts reels savedPosts savedReels')
-   .lean();
+   .populate({
+    path: 'posts',
+    options: { sort: { createdAt: -1 } },
+    populate: {
+      path: 'comments',
+      options: { sort: { createdAt: -1 } },
+      populate: {
+        path: 'author',
+        model: 'User', // Explicitly naming the model is safer for deep nests
+        select: ' _id userName profileImage firstName lastName'
+      }
+    }
+  })
+  .populate({
+    path: 'reels',
+    options: { sort: { createdAt: -1 } },
+    populate: {
+      path: 'comments',
+      // If you need to sort comments, do it here
+      options: { sort: { createdAt: -1 } },
+      populate: {
+        path: 'author',
+        model: 'User', // Explicitly naming the model is safer for deep nests
+        select: ' _id userName profileImage firstName lastName'
+      }
+    }
+  })
+  .populate({                // Correct way: Populate with options
+    path: 'savedPosts',
+    options: { sort: { createdAt: -1 } }, // Sort posts here
+    populate:[{
+      path : 'author',
+      select: ' _id userName profileImage firstName lastName'
+    },
+    {
+      path: 'comments',
+      // If you need to sort comments, do it here
+      options: { sort: { createdAt: -1 } },
+      populate: {
+        path: 'author',
+        model: 'User', // Explicitly naming the model is safer for deep nests
+        select: ' _id userName profileImage firstName lastName'
+      }
+    }]
+  })
+  .populate({                // Correct way: Populate with options
+    path: 'savedReels',
+    options: { sort: { createdAt: -1 } }, // Sort posts here
+    populate:[{
+      path : 'author',
+      select: ' _id userName profileImage firstName lastName'
+    },
+    {
+      path: 'comments',
+      // If you need to sort comments, do it here
+      options: { sort: { createdAt: -1 } },
+      populate: {
+        path: 'author',
+        model: 'User', // Explicitly naming the model is safer for deep nests
+        select: ' _id userName profileImage firstName lastName'
+      }
+    }]
+  });
+  
     }
 
    const story = await Story.findOne({author:user._id});

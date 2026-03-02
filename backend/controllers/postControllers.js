@@ -236,7 +236,7 @@ const getPostById = async (req,res) =>{
       const {postId} =  req.params;
       const postObjectId = new mongoose.Types.ObjectId(postId);
 
-      const post = await Post.findOne(postObjectId)
+      const post = await Post.findById(postObjectId)
       .populate("author",'firstName lastName userName profileImage')
       .populate('comments.author', 'firstName lastName userName profileImage');
 
@@ -252,7 +252,62 @@ const getPostById = async (req,res) =>{
 }
 }
 
+const editPost = async (req,res) =>{
+   try {
+      const {postId} =  req.params;
+      const {caption} =  req.body;
+      if (!postId) {
+         return res.status(400).json({message:'caption and postId needed'})
+      }
+      const postObjectId = new mongoose.Types.ObjectId(postId);
+
+      const post = await Post.findById(postObjectId);
+      if (String(post.author) !== String(req.userId)) {
+         return res.status(400).json({message:'only author can edit the post'})
+      }
+      post.caption = caption;
+      await post.save();
+      
+      return res.status(200).json({caption}); 
+
+} catch (error) {
+     console.log("editPost error");
+    console.log(error);
+
+    return res.status(500).json({
+      msg: "editPost error",
+    });
+}
+}
+
+const deletePost = async (req,res) =>{
+   try {
+      const {postId} =  req.params;
+      if (!postId) {
+         return res.status(400).json({message:'postId needed'})
+      }
+      const postObjectId = new mongoose.Types.ObjectId(postId);
+
+      const post = await Post.findById(postObjectId);
+      if (String(post.author) !== String(req.userId)) {
+         return res.status(400).json({message:'only author can delete this post'})
+      }
+
+       await Post.findByIdAndDelete(postObjectId);
+      
+
+      return res.status(200).json({message:'Post Deeleted sucessfuly'}); 
+
+} catch (error) {
+     console.log("deletePost error");
+    console.log(error);
+
+    return res.status(500).json({
+      msg: "deletePost error",
+    });
+}
+}
 
 module.exports = {
-   getAllPost,uploadPost,likePost,commentPost,savedPost,likedUsers,getPostById
+   getAllPost,uploadPost,likePost,commentPost,savedPost,likedUsers,getPostById,editPost,deletePost
 }

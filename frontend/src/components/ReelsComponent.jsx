@@ -18,6 +18,7 @@ import { setOtherUserData, setUserData } from '../redux/userSlice';
 import followFnc from '../getingData/followFnc';
 import Suggetion from '../basicFunctions/Suggetion';
 import { SocketDataContext } from '../context/SocketContext';
+import { capitalizeFirstLetter } from '../basicFunctions/stringFunctions';
 
 const ReelsComponent = ({reels, navigateFrom}) => {
 const [progress,setProgress] = useState(0)
@@ -74,9 +75,9 @@ observerFnc(videoRef);  //observe function
 const[author,setAuthor] = useState(null);
 
 useEffect(()=>{
-if (navigateFrom == 'reelsPage') {
+if (navigateFrom == 'reelsPage' || navigateFrom == 'savedProfile') {
   setAuthor(reels?.author);
-}else if (navigateFrom == 'profilePage' || navigateFrom == 'savedProfile'){
+}else if (navigateFrom == 'profilePage'){
   setAuthor(otherUserData);
 }
 },[otherUserData, navigate])
@@ -93,13 +94,19 @@ const updateFnc = ()=>{
     try {
       const result = await axios.get(`${import.meta.env.VITE_SERVER_URL}/reels/like/${reels._id}`,{withCredentials:true});
 const updatedReels = result.data;
-console.log(result);
+console.log(result.data);
+console.log(navigateFrom);
 
-    if (navigateFrom == 'mainPage') {
-      const updatedData = reelsData.map(
+
+    if (navigateFrom == 'reelsPage') {
+      const updatedData = reelsData?.map(
           (p)=> String(p._id)===String(reels._id)?updatedReels:p 
         );
         dispatch(setReelsData(updatedData));
+        console.log(updatedReels);
+        console.log(reels);
+
+        
     }else if (navigateFrom == 'profilePage'){
       
       const updated = otherUserData?.reels?.map(
@@ -150,12 +157,18 @@ console.log(result);
       const result = await axios.post(`${import.meta.env.VITE_SERVER_URL}/reels/comment/${reels._id}`,{message:comment},{withCredentials:true});
 const updatedReels = result.data;
 console.log(result.data);
+console.log(reelsData,reels._id);
+console.log(navigateFrom);
 
-if (navigateFrom == 'mainPage') {
+
+if (navigateFrom == 'reelsPage') {
    const updatedData = reelsData.map(
       (p)=> String(p._id)===String(reels._id)?updatedReels:p 
     );
 dispatch(setReelsData(updatedData));
+console.log(reelsData);
+console.log(updatedData);
+
 }else if (navigateFrom == 'profilePage'){
   const updated = otherUserData?.reels?.map(
       (p)=> String(p._id)===String(reels._id)?updatedReels:p 
@@ -339,8 +352,8 @@ const isInetialMount = useRef(true);
         
         <div className='absolute bottom-6 left-2 flex-col gap-2 p-3'>
           <div className='flex items-center gap-1.5 cursor-pointer py-2 mb-4'>
-            <div onClick={()=>navigate(`/profile/${author?.userName}`)} className='active:scale-90 h-9 w-9 rounded-full '><img src={author?.profileImage} className='h-full w-full rounded-full overflow-hidden object-cover' alt="" /></div>
-            <div onClick={()=>navigate(`/profile/${author?.userName}`)} className='active:scale-90 text-white font-semibold text-xl truncate max-w-20 mr-2'>{author?.userName}</div>
+            <div onClick={()=>navigate(`/profile/${author?.userName}`)} className='active:scale-90 h-9 w-9 rounded-full '><img src={author?.profileImage || dp} className='h-full w-full rounded-full overflow-hidden object-cover' alt="" /></div>
+            <div onClick={()=>navigate(`/profile/${author?.userName}`)} className='active:scale-90 text-white font-semibold text-xl truncate max-w-28 mr-2'>{capitalizeFirstLetter(author?.userName)}</div>
             {/* <button className='text-white border-2 border-white bg-transparent text-sm font-semibold px-4 py-2 rounded-full'>
               {(userData?.followings).includes(author?._id)?'Following':'Follow'}
             </button> */}
@@ -374,7 +387,7 @@ const isInetialMount = useRef(true);
             <div onClick={()=>setShowComment(false)} className='w-screen  h-screen overflow-hidden   bg-gray-950 fixed left-0 top-0 opacity-30 z-10'></div>
             <div className='flex-col p-2 h-[50vh] rounded-t-2xl bg-gray-800 bottom-0 z-30 absolute left-1/2 transform -translate-x-1/2 w-full max-w-[500px] overflow-y-auto'>
               <div className='w-full border-b-[1px] flex items-center p-2 mb-2'>
-                <IoMdArrowRoundBack onClick={()=>{setShowComment(false);dispatch(setLikedUsersData(null))}} className='active:scale-90 hover:scale-105 hover:bg-gray-800 size-8 p-1 rounded-2xl fill-white cursor-pointer' />
+                <IoMdArrowRoundBack onClick={()=>setShowComment(false)} className='active:scale-90 hover:scale-105 hover:bg-gray-800 size-8 p-1 rounded-2xl fill-white cursor-pointer' />
                 <h1 className='mx-3 text-white font-xl cursor-default'> Comments </h1>
               </div>
             {/* comment input */}
